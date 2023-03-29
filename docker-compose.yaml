@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  whoami:
+    image: startex/api-restaurant
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api-restaurant
+    restart: always
+    expose:
+      - "80"
+    environment:
+      - VIRTUAL_HOST=api-restaurant.startex.la
+      - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=api-restaurant.startex.la
+      - LETSENCRYPT_EMAIL=souksavath.dev@gmail.com
+    network_mode: bridge
