@@ -5,6 +5,7 @@ module.exports = {
   CheckPassKey: (req, res, next) => {
     let { secretid, secretsingnature } = req.headers;
     let resp;
+    console.log('This is Key', secretid);
     try {
       var getBody = req.body;
       getBody = JSON.stringify(getBody);
@@ -35,7 +36,7 @@ module.exports = {
         // console.log("decrypt: " + originalText);
 
         // Decrypt
-        console.log('This is -------KEY:   ',secretsingnature);
+        console.log('This is -------KEY:   ', secretsingnature);
         var bytes = CryptoJS.AES.decrypt(
           secretsingnature,
           process.env.SECRET_SINGNATURE

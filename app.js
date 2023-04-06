@@ -13,14 +13,10 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var authenRouter = require("./routes/authen");
 var adminRouter = require("./routes/admin");
-var accountShopRouter  = require("./routes/accout_shop");
-var menuRouter = require("./routes/menu");
+var accountShopRouter = require("./routes/accout_shop");
 var exchangeRouter = require("./routes/exchange");
 var categoryRouter = require("./routes/category")
 var unitRouter = require("./routes/unit");
-var foodTypeRouter = require("./routes/food_type");
-var tableRouter = require("./routes/table");
-var promotionRouter = require("./routes/promotion");
 
 var app = express();
 
@@ -43,13 +39,9 @@ app.use("/api/v1/admin/", adminRouter);
 app.use("/api/v1/exchange", exchangeRouter);
 app.use("/api/v1/logs/", express.static(__dirname + "/logs/", { icons: true }));
 app.use("/api/v1/logs/", serveIndex(__dirname + "/logs", { icons: true }));
-app.use("/api/v1/accountshop",accountShopRouter);
-app.use("/api/v1/menu",menuRouter);
-app.use("/api/v1/category",categoryRouter);
-app.use("/api/v1/unit",unitRouter);
-app.use("/api/v1/foodtype",foodTypeRouter);
-app.use("/api/v1/table",tableRouter);
-app.use("/api/v1/promotion",promotionRouter);
+app.use("/api/v1/accountshop", accountShopRouter);
+app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/unit", unitRouter);
 
 
 // catch 404 and forward to error handler

@@ -253,6 +253,7 @@ module.exports = {
   UserResetPassword: async (req, res) => {
     const validateKeys = ["!id:number", "!newpassword"];
     const [isValid, logs, result] = useValidate(validateKeys, req.body);
+    console.log(result);
     if (isValid) {
       return res.status(301).json(
         errorResponse({
@@ -267,8 +268,10 @@ module.exports = {
     let salt = genSaltSync(10);
     result.newpassword = hashSync(result.newpassword, salt); // ຮັບຈາກໜ້າບ້ານແລ້ວແປງລະຫັດໃຫ້ເປັນ Bcrypt
     const { data, statusInfo } = await query("call username_reset_password(?,?,?,?)", [
-      req.userModel.result.id,
-      req.userModel.result.shop_id,
+      // req.userModel.result.id,
+      1,
+      // req.userModel.result.shop_id,
+      "TK001",
       result?.id,
       result?.newpassword,
     ]).catch((error) =>

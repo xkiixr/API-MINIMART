@@ -31,12 +31,15 @@ router.get("/", function (req, res, next) {
   };
   res.json(resp);
 });
-router.post("/create", verifyToken, upload.single("profile"), errHandler, UserCreate);
+router.post("/create", upload.single("profile"), errHandler, UserCreate);
 router.put("/update", verifyToken, upload.single("profile"), errHandler, UserUpdate);
 router.post("/profile/update", verifyToken, upload.single("profile"), errHandler, UserUpdateProfile);
 router.delete("/delete/:id", verifyToken, UserDelete);
-router.post("/resetPassword", verifyToken, UserResetPassword);
+router.post("/resetPassword", UserResetPassword);
+
 router.post("/change/password", verifyToken, UserChangePassword);
+
+
 router.get("/view/:search/:start/:limit", verifyToken, UsernameView);
 router.get("/viewall/:search", verifyToken, UsernameViewAll);
 
