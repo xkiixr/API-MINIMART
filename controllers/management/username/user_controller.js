@@ -74,26 +74,27 @@ module.exports = {
       );
     }
     var image, uploadParameters;
-    if (result.imageUrl) {
-      console.log(result.imageUrl);
-      console.log(result.imageUrl.split("/"));
-      result.imageUrl = result.imageUrl.split("/");
-      result.imageUrl = result.imageUrl[result.imageUrl.length - 1];
-      console.log("result.imageUrl: ", result.imageUrl);
-    }
-    if (!req.file) {
-      //ກວດສອບຟາຍທີ່ສົ່ງມາວ່າເປັນຄ່າວ່າງ ຫຼື ບໍ່
-      image = result.imageUrl;
-    } else {
-      image = req.file.fieldname + "_" + Date.now() + "_" + req.file.originalname; // ຖ້າບໍ່ເປັນຄ່າວ່າງໃຫ້ຕັ້ງຕົວປ່ຽນເທົ່າກັບຊື່ຟາຍທີ່ສົ່ງມາ
-      uploadParameters = {
-        Bucket: process.env.BucketName,
-        ContentType: req.file.mimetype,
-        Body: req.file.buffer,
-        ACL: "public-read",
-        Key: image,
-      };
-    }
+    // if (result.imageUrl) {
+    //   console.log(result.imageUrl);
+    //   console.log(result.imageUrl.split("/"));
+    //   result.imageUrl = result.imageUrl.split("/");
+    //   result.imageUrl = result.imageUrl[result.imageUrl.length - 1];
+    //   console.log("result.imageUrl: ", result.imageUrl);
+    // }
+    // if (!req.file) {
+    //   //ກວດສອບຟາຍທີ່ສົ່ງມາວ່າເປັນຄ່າວ່າງ ຫຼື ບໍ່
+    //   image = result.imageUrl;
+    // } else {
+    //   image = req.file.fieldname + "_" + Date.now() + "_" + req.file.originalname; // ຖ້າບໍ່ເປັນຄ່າວ່າງໃຫ້ຕັ້ງຕົວປ່ຽນເທົ່າກັບຊື່ຟາຍທີ່ສົ່ງມາ
+    //   uploadParameters = {
+    //     Bucket: process.env.BucketName,
+    //     ContentType: req.file.mimetype,
+    //     Body: req.file.buffer,
+    //     ACL: "public-read",
+    //     Key: image,
+    //   };
+    // }
+    image = result.imageUrl;
     const { data, statusInfo } = await query("call username_update(?,?,?,?,?,?,?,?,?,?,?)",
       [
         req.userModel.result.id,
@@ -109,89 +110,90 @@ module.exports = {
         image
       ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
     if (statusInfo["msg"] == "success") {
-      if (req.file) {
-        let params = {
-          Bucket: process.env.BucketName,
-          Key: result?.imageUrl,
-        };
-        space.deleteObject(params, function (error, data) {
-          if (error) {
-            console.log(error);
-          }
-        });
-        space.upload(uploadParameters, function (error, data) {
-          if (error) {
-            console.log("\n", error, "\n");
-          }
-        });
-      }
+      // if (req.file) {
+      //   let params = {
+      //     Bucket: process.env.BucketName,
+      //     Key: result?.imageUrl,
+      //   };
+      //   space.deleteObject(params, function (error, data) {
+      //     if (error) {
+      //       console.log(error);
+      //     }
+      //   });
+      //   space.upload(uploadParameters, function (error, data) {
+      //     if (error) {
+      //       console.log("\n", error, "\n");
+      //     }
+      //   });
+      // }
     }
     return res.status(statusInfo["status"]).send({ statusInfo });
   },
-  UserUpdateProfile: async (req, res) => {
-    const validateKeys = ["!name", "surname", "!gender", "imageUrl"];
-    const [isValid, logs, result] = useValidate(validateKeys, req.body);
-    if (isValid) {
-      return res.status(301).json(
-        errorResponse({
-          status: 301,
-          error: true,
-          msg: "require field",
-          title: "ຂໍອະໄພ",
-          message: logs[0],
-        })
-      );
-    }
-    var image, uploadParameters;
-    if (result.imageUrl) {
-      console.log(result.imageUrl);
-      console.log(result.imageUrl.split("/"));
-      result.imageUrl = result.imageUrl.split("/");
-      result.imageUrl = result.imageUrl[result.imageUrl.length - 1];
-      console.log("result.imageUrl: ", result.imageUrl);
-    }
-    if (!req.file) {
-      //ກວດສອບຟາຍທີ່ສົ່ງມາວ່າເປັນຄ່າວ່າງ ຫຼື ບໍ່
-      image = result.imageUrl;
-    } else {
-      image = req.file.fieldname + "_" + Date.now() + "_" + req.file.originalname; // ຖ້າບໍ່ເປັນຄ່າວ່າງໃຫ້ຕັ້ງຕົວປ່ຽນເທົ່າກັບຊື່ຟາຍທີ່ສົ່ງມາ
-      uploadParameters = {
-        Bucket: process.env.BucketName,
-        ContentType: req.file.mimetype,
-        Body: req.file.buffer,
-        ACL: "public-read",
-        Key: image,
-      };
-    }
-    const { data, statusInfo } = await query("call username_update_profile(?,?,?,?,?,?)",
-      [
-        req.userModel.result.id,
-        req.userModel.result.shop_id,
-        result?.name,
-        result?.surname,
-        result?.gender,
-        image
-      ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
-    if (statusInfo["msg"] == "success") {
-      if (req.file) {
-        let params = {
-          Bucket: process.env.BucketName,
-          Key: result?.imageUrl,
-        };
-        space.deleteObject(params, function (error, data) {
-          if (error) {
-            console.log(error);
-          }
-        });
-        space.upload(uploadParameters, function (error, data) {
-          if (error) {
-            console.log("\n", error, "\n");
-          }
-        });
-      }
-    }
-    return res.status(statusInfo["status"]).send({ statusInfo, data });
-  },
+  // UserUpdateProfile: async (req, res) => {
+  //   const validateKeys = ["!name", "surname", "!gender", "imageUrl"];
+  //   const [isValid, logs, result] = useValidate(validateKeys, req.body);
+  //   if (isValid) {
+  //     return res.status(301).json(
+  //       errorResponse({
+  //         status: 301,
+  //         error: true,
+  //         msg: "require field",
+  //         title: "ຂໍອະໄພ",
+  //         message: logs[0],
+  //       })
+  //     );
+  //   }
+  //   var image, uploadParameters;
+  //   // if (result.imageUrl) {
+  //   //   console.log(result.imageUrl);
+  //   //   console.log(result.imageUrl.split("/"));
+  //   //   result.imageUrl = result.imageUrl.split("/");
+  //   //   result.imageUrl = result.imageUrl[result.imageUrl.length - 1];
+  //   //   console.log("result.imageUrl: ", result.imageUrl);
+  //   // }
+  //   // if (!req.file) {
+  //   //   //ກວດສອບຟາຍທີ່ສົ່ງມາວ່າເປັນຄ່າວ່າງ ຫຼື ບໍ່
+  //   //   image = result.imageUrl;
+  //   // } else {
+  //   //   image = req.file.fieldname + "_" + Date.now() + "_" + req.file.originalname; // ຖ້າບໍ່ເປັນຄ່າວ່າງໃຫ້ຕັ້ງຕົວປ່ຽນເທົ່າກັບຊື່ຟາຍທີ່ສົ່ງມາ
+  //   //   uploadParameters = {
+  //   //     Bucket: process.env.BucketName,
+  //   //     ContentType: req.file.mimetype,
+  //   //     Body: req.file.buffer,
+  //   //     ACL: "public-read",
+  //   //     Key: image,
+  //   //   };
+  //   // }
+  //   image = result.imageUrl;
+  //   const { data, statusInfo } = await query("call username_update(?,?,?,?,?,?)",
+  //     [
+  //       req.userModel.result.id,
+  //       req.userModel.result.shop_id,
+  //       result?.name,
+  //       result?.surname,
+  //       result?.gender,
+  //       image
+  //     ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
+  //   if (statusInfo["msg"] == "success") {
+  //     if (req.file) {
+  //       let params = {
+  //         Bucket: process.env.BucketName,
+  //         Key: result?.imageUrl,
+  //       };
+  //       space.deleteObject(params, function (error, data) {
+  //         if (error) {
+  //           console.log(error);
+  //         }
+  //       });
+  //       space.upload(uploadParameters, function (error, data) {
+  //         if (error) {
+  //           console.log("\n", error, "\n");
+  //         }
+  //       });
+  //     }
+  //   }
+  //   return res.status(statusInfo["status"]).send({ statusInfo, data });
+  // },
   UserDelete: async (req, res) => {
     const validateKeys = ["!id"];
     const [isValid, logs, result] = useValidate(validateKeys, req.params);
