@@ -6,6 +6,7 @@ module.exports = {
     let { secretid, secretsingnature } = req.headers;
     let resp;
     console.log('This is Key', secretid);
+    console.log('ENV:', process.env.SECRET_ID);
     try {
       var getBody = req.body;
       getBody = JSON.stringify(getBody);
