@@ -1,15 +1,12 @@
 {
   "scripts": {
-    "start": "npm run build && npm run package:discover -- --copy && node src/server/index.js"
+    "dev": "nodemon ./bin/www",
+    "start": "node ./bin/www",
+    "build": "nodemon ./bin/www"
   },
   "name": "restaurant-api",
   "version": "0.0.0",
   "private": true,
-  "scripts": {
-    "dev": "nodemon ./bin/www",
-    "start": "node ./bin/www",
-    "build":"nodemon ./bin/www"
-  },
   "dependencies": {
     "aws-sdk": "^2.1320.0",
     "bcrypt": "^5.1.0",
@@ -30,6 +27,7 @@
     "serve-index": "^1.9.1",
     "serve-static": "^1.15.0",
     "validate-fields-body": "^1.1.9",
+    "vercel": "^28.18.3",
     "winston": "^3.8.2"
   },
   "devDependencies": {
