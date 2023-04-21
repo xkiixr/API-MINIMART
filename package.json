@@ -2,7 +2,7 @@
   "scripts": {
     "start": "npm run build && npm run package:discover -- --copy && node src/server/index.js"
   },
-  "name": "restaurant-api",
+  "name": "minimart-api",
   "version": "0.0.0",
   "private": true,
   "scripts": {

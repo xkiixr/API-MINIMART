@@ -17,6 +17,8 @@ var accountShopRouter = require("./routes/accout_shop");
 var exchangeRouter = require("./routes/exchange");
 var categoryRouter = require("./routes/category")
 var unitRouter = require("./routes/unit");
+var productRouter = require("./routes/product");
+var customerRouter = require("./routes/customer");
 
 var app = express();
 
@@ -42,6 +44,8 @@ app.use("/api/v1/logs/", serveIndex(__dirname + "/logs", { icons: true }));
 app.use("/api/v1/accountshop", accountShopRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/unit", unitRouter);
+app.use("/api/v1/product", productRouter);
+app.use("/api/v1/customer", customerRouter);
 
 
 // catch 404 and forward to error handler
