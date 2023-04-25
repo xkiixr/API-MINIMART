@@ -151,7 +151,14 @@ module.exports = {
         const resp = await conn.query("call product_view(?,?,?)",
             [
                 "%" + result.search + "%", result?.start, result?.limit
-            ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
+            ])
+        console.log();
+
+        if (resp[0][0].msg !== "success") {
+            error = { statusInfo: resp[0][0] }
+
+            res.status(resp[0][0].status).send(error);
+        }
 
 
 
@@ -171,10 +178,17 @@ module.exports = {
         // }
         data = resp[2]
 
+        const convert = data.map(d => {
+            return { ...d, product_unit: JSON.parse(d['product_unit']) }
+        });
 
-        console.log(data);
 
-        return res.status(statusInfo["status"]).json({ statusInfo, data });
+
+        return res.status(statusInfo["status"]).json({
+            statusInfo, data: convert,
+
+        });
+
     },
     productViewAll: async (req, res) => {
         const validateKeys = ["search"];

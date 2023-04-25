@@ -1,0 +1,44 @@
+var express = require("express");
+var router = express.Router();
+const multer = require("multer");
+const storage = multer.memoryStorage();
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 5000000,
+    },
+});
+
+function errHandler(err, req, res, next) {
+    if (err instanceof multer.MulterError) {
+        res.json({
+            success: 0,
+            message: err.message
+        })
+    }
+};
+const {
+    verifyToken,
+} = require("../controllers/authentication/verify_controller");
+const {
+    orderCreate,
+    orderUpdate,
+    orderView,
+    orderViewAll
+} = require("../controllers/management/order/order_controller");
+/* GET home page. */
+router.get("/", function (req, res, next) {
+    let resp = {
+        status: 200,
+        message: "Category Page",
+    };
+    res.json(resp);
+});
+ router.post("/create", verifyToken, orderCreate);
+ router.put("/update/:orderID", verifyToken, orderUpdate);
+// router.delete("/delete/:cateID", verifyToken, categoryDelete);
+ router.get("/view/all/:search", verifyToken, orderViewAll);
+router.get("/view/:search/:start/:limit", verifyToken, orderView);
+
+
+module.exports = router;

@@ -98,7 +98,7 @@ module.exports = {
     }
   },
   verifyToken: (req, res, next) => {
-    let token = req.get("authorization");
+    let token = req.get("Authorization");
     let resp;
     if (token) {
       token = token.slice(7);
