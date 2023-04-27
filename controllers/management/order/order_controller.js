@@ -297,5 +297,190 @@ module.exports = {
             });
         }
     }
+    ,
+    orderViewBypayId: async (req, res) => {
+        let conn = await pool.getConnection();
+        let statusInfo
+        let data
+        const validateKeys = ["payID", "search", "start", "limit"];
+        const [isValid, logs, result] = useValidate(validateKeys, req.params);
+        if (isValid) {
+            return res.status(301).json(
+                errorResponse({
+                    status: 301,
+                    error: true,
+                    msg: "require field",
+                    title: "ຂໍອະໄພ",
+                    message: logs[0],
+                })
+            );
+        }
+        if (result.search == ":search") {
+            result.search = "";
+        }
+        if (result.payID == ":payID") {
+            return res.status(301).json(
+                errorResponse({
+                    status: 301,
+                    error: true,
+                    msg: "require field",
+                    title: "ຂໍອະໄພ",
+                    message: "require payID",
+                })
+            );
+        }
+        if (result.start == ":start") {
+            return res.status(301).json(
+                errorResponse({
+                    status: 301,
+                    error: true,
+                    msg: "require field",
+                    title: "ຂໍອະໄພ",
+                    message: "require start",
+                })
+            );
+        }
+        if (result.limit == ":limit") {
+            return res.status(301).json(
+                errorResponse({
+                    status: 301,
+                    error: true,
+                    msg: "require field",
+                    title: "ຂໍອະໄພ",
+                    message: "require limit",
+                })
+            );
+        }
+
+        const resp = await conn.query("call order_view_by_payID(?,?,?,?)",
+            [
+                result?.payID, "%" + result.search + "%", result?.start, result?.limit
+            ])
+
+        if (resp[0][0].msg !== "success") {
+            error = { statusInfo: resp[0][0] }
+
+            res.status(resp[0][0].status).send(error);
+        }
+
+        statusInfo = resp[0][0]
+        // for (let i = 0; i < resp[2].length; i++) {
+        //     console.log(i);
+        //     data = {
+        //         order_id: resp[2][i].order_id,
+        //         order_code: resp[2][i].order_code,
+        //         order_barcode: resp[2][i].order_barcode,
+        //         order_name: resp[2][i].order_name,
+        //         cost_price: resp[2][i].cost_price,
+        //         category_name: resp[2][i].category_name,
+        //         order_unit: JSON.parse(resp[2][i].order_unit),
+        //         expire_date: resp[2][i].expire_date,
+        //     }
+        // }
+        data = resp[2]
+
+        const convert = data.map(d => {
+            return { ...d, product_detail: JSON.parse(d['product_detail']) }
+        });
+
+
+
+        return res.status(statusInfo["status"]).json({
+            statusInfo, data: convert,
+
+        });
+    },
+    orderViewBypaystatusId: async (req, res) => {
+        let conn = await pool.getConnection();
+        let statusInfo
+        let data
+        const validateKeys = ["paystatusID", "search", "start", "limit"];
+        const [isValid, logs, result] = useValidate(validateKeys, req.params);
+        if (isValid) {
+            return res.status(301).json(
+                errorResponse({
+                    status: 301,
+                    error: true,
+                    msg: "require field",
+                    title: "ຂໍອະໄພ",
+                    message: logs[0],
+                })
+            );
+        }
+        if (result.search == ":search") {
+            result.search = "";
+        }
+        if (result.paystatusID == ":paystatusID") {
+            return res.status(301).json(
+                errorResponse({
+                    status: 301,
+                    error: true,
+                    msg: "require field",
+                    title: "ຂໍອະໄພ",
+                    message: "require payStatusID",
+                })
+            );
+        }
+        if (result.start == ":start") {
+            return res.status(301).json(
+                errorResponse({
+                    status: 301,
+                    error: true,
+                    msg: "require field",
+                    title: "ຂໍອະໄພ",
+                    message: "require start",
+                })
+            );
+        }
+        if (result.limit == ":limit") {
+            return res.status(301).json(
+                errorResponse({
+                    status: 301,
+                    error: true,
+                    msg: "require field",
+                    title: "ຂໍອະໄພ",
+                    message: "require limit",
+                })
+            );
+        }
+
+        const resp = await conn.query("call order_view_by_payStatusID(?,?,?,?)",
+            [
+                result?.paystatusID, "%" + result.search + "%", result?.start, result?.limit
+            ])
+
+        if (resp[0][0].msg !== "success") {
+            error = { statusInfo: resp[0][0] }
+
+            res.status(resp[0][0].status).send(error);
+        }
+
+        statusInfo = resp[0][0]
+        // for (let i = 0; i < resp[2].length; i++) {
+        //     console.log(i);
+        //     data = {
+        //         order_id: resp[2][i].order_id,
+        //         order_code: resp[2][i].order_code,
+        //         order_barcode: resp[2][i].order_barcode,
+        //         order_name: resp[2][i].order_name,
+        //         cost_price: resp[2][i].cost_price,
+        //         category_name: resp[2][i].category_name,
+        //         order_unit: JSON.parse(resp[2][i].order_unit),
+        //         expire_date: resp[2][i].expire_date,
+        //     }
+        // }
+        data = resp[2]
+
+        const convert = data.map(d => {
+            return { ...d, product_detail: JSON.parse(d['product_detail']) }
+        });
+
+
+
+        return res.status(statusInfo["status"]).json({
+            statusInfo, data: convert,
+
+        });
+    },
 
 };

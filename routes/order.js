@@ -24,7 +24,9 @@ const {
     orderCreate,
     orderUpdate,
     orderView,
-    orderViewAll
+    orderViewAll,
+    orderViewBypayId,
+    orderViewBypaystatusId
 } = require("../controllers/management/order/order_controller");
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -39,6 +41,9 @@ router.get("/", function (req, res, next) {
 // router.delete("/delete/:cateID", verifyToken, categoryDelete);
  router.get("/view/all/:search", verifyToken, orderViewAll);
 router.get("/view/:search/:start/:limit", verifyToken, orderView);
+router.get("/view/pay/:payID/:search/:start/:limit", verifyToken, orderViewBypayId);
+router.get("/view/status/:paystatusID/:search/:start/:limit", verifyToken, orderViewBypaystatusId);
 
 
 module.exports = router;
+    
