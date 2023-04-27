@@ -20,6 +20,7 @@ var unitRouter = require("./routes/unit");
 var productRouter = require("./routes/product");
 var customerRouter = require("./routes/customer");
 var orderRouter = require("./routes/order");
+var importRouter =require("./routes/import");
 
 var app = express();
 
@@ -48,6 +49,7 @@ app.use("/api/v1/unit", unitRouter);
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/customer", customerRouter);
 app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/import", importRouter);
 
 
 // catch 404 and forward to error handler
