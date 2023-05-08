@@ -31,7 +31,7 @@ router.get("/", function (req, res, next) {
   };
   res.json(resp);
 });
-router.post("/create", upload.single("profile"), errHandler, UserCreate);
+router.post("/create",verifyToken, upload.single("profile"), errHandler, UserCreate);
 router.put("/update", verifyToken, upload.single("profile"), errHandler, UserUpdate);
 // router.post("/profile/update", verifyToken, upload.single("profile"), errHandler, UserUpdateProfile);
 router.delete("/delete/:id", verifyToken, UserDelete);

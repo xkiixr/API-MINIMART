@@ -34,6 +34,7 @@ module.exports = {
         Key: image,
       };
     }
+    console.log(result);
     const { data, statusInfo } = await query("call username_create(?,?,?,?,?,?,?,?,?,?,?)",
       [
         req.userModel.result.id,
