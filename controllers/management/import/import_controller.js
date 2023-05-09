@@ -41,7 +41,7 @@ module.exports = {
             }
         }
         console.log();
-            
+
 
         const { data, statusInfo } = await query("call import_create(?,?,?,?,?,?)",
             [
@@ -57,7 +57,7 @@ module.exports = {
     },
     importUpdate: async (req, res) => {
         let importID = req.params.importID
-        const validateKeys = ["!drescript", "!payID:number", "!importStatusID:number", "Product"];
+        const validateKeys = ["!drescript", "!importStatusID:number", "Product"];
         const [isValid, logs, result] = useValidate(validateKeys, req.body);
         if (isValid) {
             return res.status(301).json(
@@ -81,6 +81,7 @@ module.exports = {
                 })
             );
         }
+
         if (result.Product) {
             result.Product = JSON.stringify(result.Product);
             result.Product = JSON.parse(result.Product);
@@ -100,19 +101,19 @@ module.exports = {
 
             }
         }
-
-        const { data, statusInfo } = await query("call import_update(?,?,?,?,?,?,?)",
+        const { data, statusInfo } = await query("call import_update(?,?,?,?,?,?)",
             [
                 req.userModel.result.id,
+                req.userModel.result.shop_id,
                 importID,
-                result?.supplyID,
-                result?.orderID,
                 result?.drescript,
                 result?.importStatusID,
                 result?.Product
+
             ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
         return res.status(statusInfo["status"]).send({ statusInfo });
     },
+
     // importDelete: async (req, res) => {
     //     const validateKeys = ["!cateID"];
     //     const [isValid, logs, result] = useValidate(validateKeys, req.params);
