@@ -24,7 +24,8 @@ const {
     importCreate,
     importUpdate,
     importView,
-    importViewAll
+    importViewAll,
+    importViewBystatus
 } = require("../controllers/management/import/import_controller");
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -34,10 +35,11 @@ router.get("/", function (req, res, next) {
     };
     res.json(resp);
 });
- router.post("/create", verifyToken, importCreate);
- router.put("/update/:importID", verifyToken, importUpdate);
+router.post("/create", verifyToken, importCreate);
+router.put("/update/:importID", verifyToken, importUpdate);
 // router.delete("/delete/:cateID", verifyToken, categoryDelete);
- router.get("/view/all/:search", verifyToken, importViewAll);
+router.get("/view/bystatus/:statusID/:search/:start/:limit", verifyToken, importViewBystatus);
+router.get("/view/all/:search", verifyToken, importViewAll);
 router.get("/view/:search/:start/:limit", verifyToken, importView);
 
 
