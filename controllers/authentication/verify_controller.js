@@ -99,7 +99,6 @@ module.exports = {
   },
   verifyToken: (req, res, next) => {
     let token = req.get("Authorization");
-    console.log(token);
     let resp;
     if (token) {
       token = token.slice(7);

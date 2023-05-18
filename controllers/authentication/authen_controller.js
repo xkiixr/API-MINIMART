@@ -84,7 +84,7 @@ module.exports = {
             process.env.SECRET_KEY_BYCRYPT,
             {
               // expiresIn: "3h",
-              expiresIn: "30d",
+              expiresIn: "1d",
             }
           );
           const refreshToken = sign(
@@ -99,7 +99,7 @@ module.exports = {
             process.env.SECRET_KEY_BYCRYPT_REFRESH,
             {
               // expiresIn: "30d",
-              expiresIn: "30d",
+              expiresIn: "1d",
             }
           );
           resp = {
