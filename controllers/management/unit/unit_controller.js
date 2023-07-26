@@ -171,7 +171,7 @@ module.exports = {
         const { data, statusInfo } = await query("call unit_view_all(?,?)",
             [
                 req.userModel.result.shop_id,
-                "%" + result.search + "%", result?.start, result?.limit
+                "%" + result.search + "%"
             ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
         return res.status(statusInfo["status"]).send({ statusInfo, data });
     },
