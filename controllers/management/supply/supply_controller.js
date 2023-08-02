@@ -3,8 +3,8 @@ const { query, errorResponse, space } = require("../../../Model/respone_model");
 
 require("dotenv").config();
 module.exports = {
-    unitCreate: async (req, res) => {
-        const validateKeys = ["!unitName"];
+    supplyCreate: async (req, res) => {
+        const validateKeys = ["!supplyCode", "!supplyName", "genderID", "!Tel", "Address", "Email", "!supplyType"];
         const [isValid, logs, result] = useValidate(validateKeys, req.body);
         if (isValid) {
             return res.status(301).json(
@@ -18,17 +18,23 @@ module.exports = {
             );
         }
 
-        const { data, statusInfo } = await query("call unit_create(?,?)",
+        const { data, statusInfo } = await query("call supply_create(?,?,?,?,?,?,?,?)",
             [
                 req.userModel.result.id,
-                result?.unitName,
-
+                result?.supplyCode,
+                result?.supplyName,
+                result?.genderID,
+                result?.Tel,
+                result?.Address,
+                result?.Email,
+                result?.supplyType,
             ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
         return res.status(statusInfo["status"]).send({ statusInfo });
     },
-    unitUpdate: async (req, res) => {
-        const unitID = req.params.unitID
-        const validateKeys = ["!unitName"];
+
+    supplyUpdate: async (req, res) => {
+        const supplyID = req.params.supplyID
+        const validateKeys = ["!supplyCode", "!supplyName", "genderID", "!Tel", "Address", "Email", "!supplyType"];
         const [isValid, logs, result] = useValidate(validateKeys, req.body);
         if (isValid) {
             return res.status(301).json(
@@ -41,65 +47,55 @@ module.exports = {
                 })
             );
         }
-        if (unitID == ":unitID") {
+        if (supplyID == ":supplyID") {
             return res.status(301).json(
                 errorResponse({
                     status: 301,
                     error: true,
                     msg: "require field",
                     title: "ຂໍອະໄພ",
-                    message: "require unitID",
+                    message: "require supplyID",
                 })
             );
         }
 
-        const { data, statusInfo } = await query("call unit_update(?,?,?)",
+        const { data, statusInfo } = await query("call supply_update(?,?,?,?,?,?,?,?,?)",
             [
                 req.userModel.result.id,
-                unitID,
-                result?.unitName,
+                supplyID,
+                result?.supplyCode,
+                result?.supplyName,
+                result?.genderID,
+                result?.Tel,
+                result?.Address,
+                result?.Email,
+                result?.supplyType,
             ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
         return res.status(statusInfo["status"]).send({ statusInfo });
     },
-    unitDelete: async (req, res) => {
-        const validateKeys = ["!unitID"];
-        const [isValid, logs, result] = useValidate(validateKeys, req.params);
-        if (isValid) {
+    supplyDelete: async (req, res) => {
+        const supplyID = req.params.supplyID
+        if (supplyID == ":supplyID") {
             return res.status(301).json(
                 errorResponse({
                     status: 301,
                     error: true,
                     msg: "require field",
                     title: "ຂໍອະໄພ",
-                    message: logs[0],
-                })
-            );
-
-        }
-        if (result.unitID == ":unitID") {
-            return res.status(301).json(
-                errorResponse({
-                    status: 301,
-                    error: true,
-                    msg: "require field",
-                    title: "ຂໍອະໄພ",
-                    message: "require unitID",
+                    message: "require supplyID",
                 })
             );
         }
-
-        const { data, statusInfo } = await query("call unit_delete(?,?)",
+        const { data, statusInfo } = await query("call supply_delete(?,?)",
             [
                 req.userModel.result.id,
-                result?.unitID,
+                supplyID
             ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
-
-
-        return res.status(statusInfo["status"]).send({ statusInfo });
+        return res.status(statusInfo["status"]).send({ statusInfo, data });
     },
 
 
-    unitView: async (req, res) => {
+    supplyView: async (req, res) => {
         const validateKeys = ["search", "start", "limit"];
         const [isValid, logs, result] = useValidate(validateKeys, req.params);
         if (isValid) {
@@ -139,13 +135,15 @@ module.exports = {
             );
         }
 
-        const { data, statusInfo } = await query("call unit_view(?,?,?)",
+        const { data, statusInfo } = await query("call supply_view(?,?,?)",
             [
-                "%" + result.search + "%", result?.start, result?.limit
+                "%" + result.search + "%",
+                result?.start,
+                result?.limit
             ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
         return res.status(statusInfo["status"]).send({ statusInfo, data });
     },
-    unitViewAll: async (req, res) => {
+    supplyViewAll: async (req, res) => {
         const validateKeys = ["search"];
         const [isValid, logs, result] = useValidate(validateKeys, req.params);
         if (isValid) {
@@ -162,13 +160,10 @@ module.exports = {
         if (result.search == ":search") {
             result.search = "";
         }
-
-
-        const { data, statusInfo } = await query("call unit_view_all(?)",
+        const { data, statusInfo } = await query("call supply_view_all(?)",
             [
-                "%" + result.search + "%"
+                "%" + result.search + "%",
             ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
         return res.status(statusInfo["status"]).send({ statusInfo, data });
     },
-
 };
