@@ -5,7 +5,7 @@ const {
   verifyToken
 } = require("../controllers/authentication/verify_controller");
 
-const { GetDropdown } = require("../controllers/management/info_dropdown_controller")
+const { GetDropdown } = require("../controllers/dropdown")
 
 /* GET home page. */
 router.get("/", function (req, res, next) {

@@ -1,24 +1,26 @@
-const pool = require("../../connectDB");
+const pool = require("../connectDB");
 module.exports = {
     GetDropdown: async (req, res) => {
         let conn, resp;
         try {
             conn = await pool.getConnection();
-            resp = await conn.query("call dropdown_info(?)", req.userModel.result.shop_id,);
+            resp = await conn.query("call dropdown_info()");
             // console.log(resp);
             if (resp[1].length > 0) {
                 resp = {
                     status: 200,
                     error: false,
-                    shopAccount: resp[0],
-                    category: resp[1],
-                    customer: resp[2],
-                    exchange: resp[3],
-                    foodType: resp[4],
-                    foodMenu: resp[5],
-                    tables: resp[6],
-                    unit: resp[7],
-                    username: resp[8],
+                    supply: resp[0],
+                    customer: resp[1],
+                    category: resp[2],
+                    unit: resp[3],
+                    gender: resp[4],
+                    import_status_id: resp[5],
+                    pay_status: resp[9],
+                    pay_type: resp[6],
+                    user_status: resp[7],
+                    supply_type: resp[8],
+
                 };
             } else {
                 resp = {
