@@ -20,6 +20,7 @@ module.exports = {
                     pay_type: resp[6],
                     user_status: resp[7],
                     supply_type: resp[8],
+                    customer_type: resp[9],
 
                 };
             } else {
