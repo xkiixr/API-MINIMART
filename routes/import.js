@@ -23,6 +23,7 @@ const {
 const {
     importCreate,
     importUpdate,
+    importConfirm,
     importView,
     importViewAll,
     importViewBystatus
@@ -37,6 +38,7 @@ router.get("/", function (req, res, next) {
 });
 router.post("/create", verifyToken, importCreate);
 router.put("/update/:importID", verifyToken, importUpdate);
+router.put("/confirm/:importID", verifyToken, importConfirm);
 // router.delete("/delete/:cateID", verifyToken, categoryDelete);
 router.get("/view/bystatus/:statusID/:search/:start/:limit", verifyToken, importViewBystatus);
 router.get("/view/all/:search", verifyToken, importViewAll);

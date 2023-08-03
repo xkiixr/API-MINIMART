@@ -113,6 +113,28 @@ module.exports = {
             ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
         return res.status(statusInfo["status"]).send({ statusInfo });
     },
+    importConfirm: async (req, res) => {
+        let importID = req.params.importID
+        if (importID == ":importID") {
+            return res.status(301).json(
+                errorResponse({
+                    status: 301,
+                    error: true,
+                    msg: "require field",
+                    title: "ຂໍອະໄພ",
+                    message: "require importID",
+                })
+            );
+        }
+
+        const { data, statusInfo } = await query("call import_confirm(?,?,?)",
+            [
+                req.userModel.result.id,
+                req.userModel.result.shop_id,
+                importID,
+            ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
+        return res.status(statusInfo["status"]).send({ statusInfo });
+    },
 
     // importDelete: async (req, res) => {
     //     const validateKeys = ["!cateID"];
