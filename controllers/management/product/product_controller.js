@@ -216,5 +216,31 @@ module.exports = {
             ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
         return res.status(statusInfo["status"]).send({ statusInfo, data });
     },
+    productViewBarcode: async (req, res) => {
+        const validateKeys = ["Barcode"];
+        const [isValid, logs, result] = useValidate(validateKeys, req.params);
+        if (isValid) {
+            return res.status(301).json(
+                errorResponse({
+                    status: 301,
+                    error: true,
+                    msg: "require field",
+                    title: "ຂໍອະໄພ",
+                    message: logs[0],
+                })
+            );
+        }
+        if (result.Barcode == ":Barcode") {
+            result.Barcode = "";
+        }
+
+
+        const { data, statusInfo } = await query("call product_view_byBarcode(?)",
+            [
+                result.Barcode
+            ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
+        return res.status(statusInfo["status"]).send({ statusInfo, data });
+    },
+
 
 };

@@ -21,7 +21,8 @@ const {
     verifyToken,
 } = require("../controllers/authentication/verify_controller");
 const {
-    productView
+    productView,
+    productViewBarcode
 } = require("../controllers/management/product/product_controller");
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -36,6 +37,7 @@ router.get("/", function (req, res, next) {
 // router.delete("/delete/:cateID", verifyToken, categoryDelete);
 // router.get("/view/all/:search", verifyToken, categoryViewAll);
 router.get("/view/:search/:start/:limit", verifyToken, productView);
+router.get("/view-by/:Barcode", verifyToken, productViewBarcode);
 
 
 module.exports = router;
