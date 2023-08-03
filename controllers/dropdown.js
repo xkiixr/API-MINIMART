@@ -16,11 +16,11 @@ module.exports = {
                     unit: resp[3],
                     gender: resp[4],
                     import_status_id: resp[5],
-                    pay_status: resp[9],
-                    pay_type: resp[6],
-                    user_status: resp[7],
-                    supply_type: resp[8],
-                    customer_type: resp[9],
+                    pay_status: resp[6],
+                    pay_type: resp[7],
+                    user_status: resp[8],
+                    supply_type: resp[9],
+                    customer_type: resp[10],
 
                 };
             } else {
