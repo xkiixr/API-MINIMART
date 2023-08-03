@@ -22,7 +22,12 @@ const {
 } = require("../controllers/authentication/verify_controller");
 const {
     productView,
-    productViewBarcode
+    productViewAll,
+    productViewBarcode,
+    productCreate,
+    productUpdate,
+    productUpdateDetail,
+    productDelete
 } = require("../controllers/management/product/product_controller");
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -32,10 +37,11 @@ router.get("/", function (req, res, next) {
     };
     res.json(resp);
 });
-// router.post("/create", verifyToken, categoryCreate);
-// router.put("/update/:cateID", verifyToken, categoryUpdate);
-// router.delete("/delete/:cateID", verifyToken, categoryDelete);
-// router.get("/view/all/:search", verifyToken, categoryViewAll);
+router.post("/create", verifyToken, productCreate);
+router.put("/update/:productID", verifyToken, productUpdate);
+router.put("/detail/update/:productID", verifyToken, productUpdateDetail);
+router.delete("/delete/:productID", verifyToken, productDelete);
+router.get("/view/all/:search", verifyToken, productViewAll);
 router.get("/view/:search/:start/:limit", verifyToken, productView);
 router.get("/view-by/:Barcode", verifyToken, productViewBarcode);
 
