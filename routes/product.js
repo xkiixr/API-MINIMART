@@ -45,7 +45,7 @@ router.delete("/delete/:productID", verifyToken, productDelete);
 router.get("/view/all/:search", verifyToken, productViewAll);
 router.get("/view/:search/:start/:limit", verifyToken, productView);
 router.get("/view-by/:Barcode", verifyToken, productViewBarcode);
-router.get("/view-by/:search/:cateID", verifyToken, productViewcateID);
+router.get("/view-by/cateID/:search/:cateID", verifyToken, productViewcateID);
 
 
 module.exports = router;
