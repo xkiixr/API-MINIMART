@@ -1,6 +1,6 @@
 const { useValidate } = require("validate-fields-body");
 const { query, errorResponse, space } = require("../../../Model/respone_model");
-const { log } = require("console");
+
 const json = require("morgan-json");
 require("dotenv").config();
 module.exports = {
@@ -193,13 +193,14 @@ module.exports = {
             [
                 "%" + result.search + "%", result?.start, result?.limit
             ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
-        console.log(statusInfo.msg);
         if (statusInfo.msg !== "success") {
             res.status(statusInfo.status).send({ statusInfo });
         }
+
         const convert = data[1].map(d => {
             return { ...d, product_detail: JSON.parse(d['product_detail']) }
         });
+
         return res.status(statusInfo["status"]).json({
             statusInfo, data: convert
         });
