@@ -283,6 +283,52 @@ module.exports = {
             statusInfo, data: convert
         });
     },
+    productViewcateID: async (req, res) => {
+
+        const validateKeys = ["search", "cateID"];
+        const [isValid, logs, result] = useValidate(validateKeys, req.params);
+        if (isValid) {
+            return res.status(301).json(
+                errorResponse({
+                    status: 301,
+                    error: true,
+                    msg: "require field",
+                    title: "ຂໍອະໄພ",
+                    message: logs[0],
+                })
+            );
+        }
+        if (result.search == ":search") {
+            result.search = "";
+        }
+        if (result.cateID == ":cateID") {
+            return res.status(301).json(
+                errorResponse({
+                    status: 301,
+                    error: true,
+                    msg: "require field",
+                    title: "ຂໍອະໄພ",
+                    message: "require cateID",
+                })
+            );
+        }
+
+
+        const { data, statusInfo } = await query("call product_view_bycateID(?,?)",
+            [
+                "%" + result.search + "%", result?.cateID
+            ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
+        console.log(statusInfo.msg);
+        if (statusInfo.msg !== "success") {
+            res.status(statusInfo.status).send({ statusInfo });
+        }
+        const convert = data[1].map(d => {
+            return { ...d, product_unit: JSON.parse(d['product_unit']) }
+        });
+        return res.status(statusInfo["status"]).json({
+            statusInfo, data: convert
+        });
+    },
     productViewBarcode: async (req, res) => {
         const validateKeys = ["Barcode"];
         const [isValid, logs, result] = useValidate(validateKeys, req.params);
