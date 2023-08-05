@@ -203,7 +203,7 @@ module.exports = {
         });
 
         return res.status(statusInfo["status"]).json({
-            statusInfo, data: { count_order: data[0].count_order, convert }
+            statusInfo,count_order: data[0].count_order, data: convert
         });
     },
     orderViewAll: async (req, res) => {
@@ -305,7 +305,7 @@ module.exports = {
             return { ...d, product_detail: JSON.parse(d['product_detail']) }
         });
         return res.status(statusInfo["status"]).json({
-            statusInfo, data: { count_order: data[0].count_order, convert }
+            statusInfo,count_order: data[0].count_order, data: convert
         });
     },
     orderViewBypaystatusId: async (req, res) => {
@@ -371,7 +371,7 @@ module.exports = {
             return { ...d, product_detail: JSON.parse(d['product_detail']) }
         });
         return res.status(statusInfo["status"]).json({
-            statusInfo, data: { count_order: data[0].count_order, convert }
+            statusInfo,count_order: data[0].count_order, data: convert
         });
     },
 
