@@ -227,7 +227,7 @@ module.exports = {
             return { ...d, product_detail: JSON.parse(d['product_detail']) }
         });
         return res.status(statusInfo["status"]).json({
-            statusInfo, data: convert
+            statusInfo, data: { count_import: data[0].count_import, convert }
         });
     },
     importViewBystatus: async (req, res) => {
@@ -292,7 +292,7 @@ module.exports = {
             return { ...d, product_detail: JSON.parse(d['product_detail']) }
         });
         return res.status(statusInfo["status"]).json({
-            statusInfo, data: convert
+            statusInfo,data: { count_import: data[0].count_import, convert }
         });
     },
     importViewAll: async (req, res) => {
@@ -324,7 +324,7 @@ module.exports = {
             return { ...d, product_detail: JSON.parse(d['product_detail']) }
         });
         return res.status(statusInfo["status"]).json({
-            statusInfo, data: convert
+            statusInfo, data: { count_import: data[0].count_import, convert }
         });
     }
 

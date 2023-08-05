@@ -245,7 +245,7 @@ module.exports = {
             return { ...d, product_unit: JSON.parse(d['product_unit']) }
         });
         return res.status(statusInfo["status"]).json({
-            statusInfo, data: convert
+            statusInfo, data: { count_product: data[0].count_product, convert }
         });
     },
 
@@ -280,7 +280,7 @@ module.exports = {
             return { ...d, product_unit: JSON.parse(d['product_unit']) }
         });
         return res.status(statusInfo["status"]).json({
-            statusInfo, data: convert
+            statusInfo, data: { count_product: data[0].count_product, convert }
         });
     },
     productViewcateID: async (req, res) => {
@@ -326,7 +326,7 @@ module.exports = {
             return { ...d, product_unit: JSON.parse(d['product_unit']) }
         });
         return res.status(statusInfo["status"]).json({
-            statusInfo, data: convert
+            statusInfo, data: { count_product: data[0].count_product, convert }
         });
     },
     productViewBarcode: async (req, res) => {

@@ -196,13 +196,14 @@ module.exports = {
         if (statusInfo.msg !== "success") {
             res.status(statusInfo.status).send({ statusInfo });
         }
-
+        // console.log(data[0]);
+        // return
         const convert = data[1].map(d => {
             return { ...d, product_detail: JSON.parse(d['product_detail']) }
         });
 
         return res.status(statusInfo["status"]).json({
-            statusInfo, data: convert
+            statusInfo, data: { count_order: data[0].count_order, convert }
         });
     },
     orderViewAll: async (req, res) => {
@@ -304,7 +305,7 @@ module.exports = {
             return { ...d, product_detail: JSON.parse(d['product_detail']) }
         });
         return res.status(statusInfo["status"]).json({
-            statusInfo, data: convert
+            statusInfo, data: { count_order: data[0].count_order, convert }
         });
     },
     orderViewBypaystatusId: async (req, res) => {
@@ -370,7 +371,7 @@ module.exports = {
             return { ...d, product_detail: JSON.parse(d['product_detail']) }
         });
         return res.status(statusInfo["status"]).json({
-            statusInfo, data: convert
+            statusInfo, data: { count_order: data[0].count_order, convert }
         });
     },
 
