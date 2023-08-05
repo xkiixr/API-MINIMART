@@ -6,7 +6,7 @@ const json = require("morgan-json");
 require("dotenv").config();
 module.exports = {
     productCreate: async (req, res) => {
-        const validateKeys = ["!productID:number", "!productName", "!costPrice:number", "Expire", "Detail"];
+        const validateKeys = ["!cateID:number", "!productName", "!costPrice:number", "Expire", "Detail"];
         const [isValid, logs, result] = useValidate(validateKeys, req.body);
         if (isValid) {
             return res.status(301).json(
@@ -44,7 +44,7 @@ module.exports = {
         const { data, statusInfo } = await query("call product_create(?,?,?,?,?,?)",
             [
                 req.userModel.result.id,
-                result?.productID,
+                result?.cateID,
                 result?.productName,
                 result?.costPrice,
                 result?.Expire,
@@ -57,7 +57,7 @@ module.exports = {
     },
     productUpdate: async (req, res) => {
         const productID = req.params.productID
-        const validateKeys = ["!cateID:number", "!productName", "!costPrice:number", "Expire"];
+        const validateKeys = ["!cateID:number", "!productName", "!costPrice:number", "Expire", "!Detail"];
         const [isValid, logs, result] = useValidate(validateKeys, req.body);
         if (isValid) {
             return res.status(301).json(
@@ -83,7 +83,28 @@ module.exports = {
         }
 
 
-        const { data, statusInfo } = await query("call product_update(?,?,?,?,?,?)",
+        if (result.Detail) {
+            result.Detail = JSON.stringify(result.Detail);
+            result.Detail = JSON.parse(result.Detail);
+            console.log(result.Detail);
+            if (typeof result.Detail !== "object") {
+                return res.status(301).send(
+                    errorResponse({
+                        status: 301,
+                        error: true,
+                        msg: "fail",
+                        title: "ຂໍອະໄພ",
+                        message: "ຮູບແບບຂໍ້ມູນບໍ່ຖືກຕ້ອງ"
+                    })
+                );
+            } else {
+                result.Detail = JSON.stringify(result.Detail);
+                console.log(result.Detail);
+
+            }
+        }
+
+        const { data, statusInfo } = await query("call product_update(?,?,?,?,?,?,?)",
             [
                 req.userModel.result.id,
                 result?.cateID,
@@ -91,6 +112,7 @@ module.exports = {
                 result?.productName,
                 result?.costPrice,
                 result?.Expire,
+                result?.Detail,
 
             ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
         console.log(statusInfo);
@@ -352,7 +374,15 @@ module.exports = {
             [
                 result.Barcode
             ]).catch((error) => res.status(error.status).send(errorResponse({ error })));
-        return res.status(statusInfo["status"]).send({ statusInfo, data });
+        if (statusInfo.msg !== "success") {
+            res.status(statusInfo.status).send({ statusInfo });
+        }
+        const convert = data[1].map(d => {
+            return { ...d, product_unit: JSON.parse(d['product_unit']) }
+        });
+        return res.status(statusInfo["status"]).json({
+            statusInfo, count_product: data[0].count_product, data: convert
+        });
     },
 
 
